@@ -1,0 +1,75 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    tools:context=".ContentActivity" >
+    
+    <include layout="@layout/actionbar"/>
+    <include layout="@layout/list_view_item"/>
+    
+    <ScrollView
+        android:id="@+id/scroll" 
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
+       	
+        <LinearLayout 
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" 
+            android:orientation="vertical" >
+            
+            <ImageView 
+            android:id="@+id/picture"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp" />        	
+        
+        	<TextView 
+            	android:id="@+id/_text"            
+            	android:layout_width="fill_parent"
+            	android:layout_height="wrap_content"
+            	android:paddingLeft="20dp"
+            	android:paddingRight="20dp"
+            	android:textSize="20sp"/>
+        	
+        	<Button 
+            	android:id="@+id/like_button"
+            	android:layout_width="fill_parent"
+            	android:layout_height="wrap_content"
+            	android:paddingLeft="20dp"
+            	android:paddingRight="20dp"
+            	android:background="@drawable/like_button" />  
+            	
+        	<LinearLayout 
+            	android:layout_width="fill_parent"
+            	android:layout_height="fill_parent" 
+            	android:orientation="vertical"
+            	android:paddingLeft="20dp"
+            	android:paddingRight="20dp" 
+            	android:background="@drawable/background_bottom">
+            	
+        	    <TextView 
+            	    android:layout_width="fill_parent"
+            		android:layout_height="wrap_content"
+            		android:textSize="30sp"
+            		android:paddingTop="50dp"
+            		android:textColor="#AA0000"
+            		android:textStyle="bold"
+            		android:text="@string/see"/>
+        	    
+        	    <ListView 
+        	        android:id="@+id/other_items_list"
+        	        android:layout_width="fill_parent"
+        	        android:layout_height="300dp" 
+        	        />
+            	
+        	</LinearLayout>
+        	
+        </LinearLayout>        
+                
+    </ScrollView>
+
+    
+
+</LinearLayout>
