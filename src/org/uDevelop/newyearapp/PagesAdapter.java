@@ -3,61 +3,37 @@ package org.uDevelop.newyearapp;
 import java.util.List;
 import com.viewpagerindicator.IconPagerAdapter;
 
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
 
-public class PagesAdapter extends PagerAdapter implements IconPagerAdapter {
-	private List<View> mPages = null;
-	private DatabaseAdapter mDbAdapter;
-    
-    public PagesAdapter(List<View> pages, DatabaseAdapter databaseAdapter) {
+public class PagesAdapter extends FragmentPagerAdapter implements IconPagerAdapter {
+	private Page[] mPages;
+	PagesAdapter(FragmentManager fm, Page[] pages) {
+        super(fm);
         mPages = pages;
-        mDbAdapter = databaseAdapter;
     }
     
     @Override
-    public Object instantiateItem(View collection, int position) {
-        View view = mPages.get(position);
-        ((ViewPager) collection).addView(view, 0);
-        return view;
+    public Fragment getItem(int position) {
+        return mPages[position].page;
     }
-    
+
     @Override
-    public void destroyItem(View collection, int position, Object view) {
-        ((ViewPager) collection).removeView((View) view);
+    public CharSequence getPageTitle(int position) {
+        return "";
     }
-    
-    @Override
+
+    @Override public int getIconResId(int position) {
+      return mPages[position].iconId;
+    }
+
+  @Override
     public int getCount() {
-        return mPages.size();
-    }
-    
-    @Override
-    public boolean isViewFromObject(View view, Object object) {
-        return view.equals(object);
-    }
-    
-    public CharSequence getPageTitle(int pPosition) {
-    	return ""; 
-    }
-    
-    @Override
-	public int getIconResId(int index) {
-		String icon = mDbAdapter.getCategoryIcon(/*index+1*/1);
-		Class res = R.drawable.class;
-        int imageId = 0;
-        try {
-        	imageId = res.getField(icon).getInt(null);
-        }
-        catch (Exception ex) {
-        	Log.w("IconAdapter", ex.getMessage());
-        }
-        return imageId;
-	}
-
-    
-
-   
+      return mPages.length;
+    }   
 }

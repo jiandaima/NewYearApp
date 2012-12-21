@@ -12,14 +12,8 @@
         android:id="@+id/page_indicator"
         android:layout_height="wrap_content"
         android:layout_width="fill_parent"
-        android:background="#FFF8DC"
-        android:textColor="#AA000000"
-        app:footerColor="#F6A01A"
-        app:footerLineHeight="2dp"
-        app:footerIndicatorHeight="3dp"
-        app:footerIndicatorStyle="underline"
-        app:selectedColor="#FF000000"
-        app:selectedBold="true"  /> 
+        android:theme="@style/CustomTabPageIndicator1"
+        /> 
         
         
         
