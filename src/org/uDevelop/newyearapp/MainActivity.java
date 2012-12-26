@@ -16,8 +16,10 @@ public class MainActivity extends FragmentActivity {
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+        //super.onCreate(savedInstanceState);
+		super.onCreate(null);
         setContentView(R.layout.activity_main);
+        
         mDbAdapter = new DatabaseAdapter(this);
         Page[] pages = getPages();
         FragmentPagerAdapter adapter = new PagesAdapter(this.getSupportFragmentManager(), pages);
@@ -26,8 +28,17 @@ public class MainActivity extends FragmentActivity {
         pager.setAdapter(adapter);
 
         TabPageIndicator indicator = (TabPageIndicator)findViewById(R.id.page_indicator);
-        indicator.setViewPager(pager);          
+        indicator.setViewPager(pager); 
+        JSonAdapter jadapter = new JSonAdapter(this);
+        
+        
+        
     }
+	
+	@Override
+	public void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+	}
 	
 	@Override
     public void onDestroy(){
