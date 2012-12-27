@@ -10,7 +10,7 @@
     
     <com.viewpagerindicator.TabPageIndicator
         android:id="@+id/page_indicator"
-        android:layout_height="80dp"
+        android:layout_height="wrap_content"
         android:layout_width="fill_parent"
         android:theme="@style/CustomTabPageIndicator1"
         android:background="@drawable/background_tabbar"
