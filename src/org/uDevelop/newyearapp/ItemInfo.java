@@ -1,7 +1,7 @@
 package org.uDevelop.newyearapp;
 
 public class ItemInfo {
-	public int id;
+	//public int id;
 	public String name;
 	public String icon;
 	public int likeCount;

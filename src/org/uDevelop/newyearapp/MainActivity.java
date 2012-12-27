@@ -12,7 +12,7 @@ import android.view.View;
 import com.viewpagerindicator.TabPageIndicator;
 
 public class MainActivity extends FragmentActivity {
-	private DatabaseAdapter mDbAdapter; 
+	private StorageAdapter mStorageAdapter; 
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -20,7 +20,8 @@ public class MainActivity extends FragmentActivity {
 		super.onCreate(null);
         setContentView(R.layout.activity_main);
         
-        mDbAdapter = new DatabaseAdapter(this);
+        //mStorageAdapter = new DatabaseAdapter(this);
+        mStorageAdapter = new JSonStorageAdapter(this);
         Page[] pages = getPages();
         FragmentPagerAdapter adapter = new PagesAdapter(this.getSupportFragmentManager(), pages);
         
@@ -28,11 +29,7 @@ public class MainActivity extends FragmentActivity {
         pager.setAdapter(adapter);
 
         TabPageIndicator indicator = (TabPageIndicator)findViewById(R.id.page_indicator);
-        indicator.setViewPager(pager); 
-        JSonAdapter jadapter = new JSonAdapter(this);
-        
-        
-        
+        indicator.setViewPager(pager);         
     }
 	
 	@Override
@@ -42,7 +39,7 @@ public class MainActivity extends FragmentActivity {
 	
 	@Override
     public void onDestroy(){
-		mDbAdapter.close();
+		mStorageAdapter.close();
 		super.onDestroy();
     }
 
@@ -62,10 +59,10 @@ public class MainActivity extends FragmentActivity {
 	}
 	
 	private Page[] getPages() {
-    	int tabCount = mDbAdapter.getCategoryCount();
+    	int tabCount = mStorageAdapter.getCategoryCount();
         Page[] pages = new Page[tabCount];                
         for(int i = 0; i < tabCount; i++) {
-        	String icon = mDbAdapter.getCategoryIcon(i+1);
+        	String icon = mStorageAdapter.getCategoryIcon(i);
         	Class res = R.drawable.class;
             int imageId = 0;
             try {
@@ -76,7 +73,7 @@ public class MainActivity extends FragmentActivity {
             }
             pages[i] = new Page();
         	pages[i].iconId = imageId;
-        	pages[i].page = new PageFragment(this, mDbAdapter, i+1);
+        	pages[i].page = new PageFragment(this, mStorageAdapter, i);
         } 
         return pages;
     }

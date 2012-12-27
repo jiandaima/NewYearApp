@@ -16,7 +16,7 @@ import android.widget.TextView;
 
 public class ContentActivity extends Activity implements OnItemClickListener {
 	private static final int sListItemsCount = 3;
-	private DatabaseAdapter mDbAdapter; 
+	private StorageAdapter mStorageAdapter; 
 	private int mCategoryId;
 	private int mIndex;
 	int[] mItemsId = new int[sListItemsCount];
@@ -27,14 +27,15 @@ public class ContentActivity extends Activity implements OnItemClickListener {
 		setContentView(R.layout.activity_content);
 		mCategoryId = this.getIntent().getIntExtra(Consts.CATETORY, -1);
 		mIndex = this.getIntent().getIntExtra(Consts.ITEM_INDEX, -1);
-		mDbAdapter = new DatabaseAdapter(this);	
+		//mStorageAdapter = new DatabaseAdapter(this);
+        mStorageAdapter = new JSonStorageAdapter(this);	
 		fillActivity();
 		fillList();
 	}
 	
 	@Override
     public void onDestroy(){
-		mDbAdapter.close();
+		mStorageAdapter.close();
 		super.onDestroy();
     }
 
@@ -46,7 +47,7 @@ public class ContentActivity extends Activity implements OnItemClickListener {
 	}
 	
 	private void fillActivity(){
-		ItemInfo item = mDbAdapter.getContentItem(mCategoryId, mIndex);
+		ItemInfo item = mStorageAdapter.getContentItem(mCategoryId, mIndex);
 		Class res = R.drawable.class;
 		
 		int imageId = 0;
@@ -91,7 +92,7 @@ public class ContentActivity extends Activity implements OnItemClickListener {
 	
 	private void fillList() {
 		ListView list = (ListView)findViewById(R.id.other_items_list);
-		int itemsCount = mDbAdapter.getContentItemCountByCategory(mCategoryId);
+		int itemsCount = mStorageAdapter.getContentItemCountByCategory(mCategoryId);
 		Random rand = new Random();
 		for(int i = 0; i < sListItemsCount; i++) {
 			int index = rand.nextInt(itemsCount);
@@ -100,7 +101,7 @@ public class ContentActivity extends Activity implements OnItemClickListener {
 			}
 			mItemsId[i] = index;			
 		}
-		SecondListAdapter adapter = new SecondListAdapter(this, mDbAdapter, mItemsId, mCategoryId); 
+		SecondListAdapter adapter = new SecondListAdapter(this, mStorageAdapter, mItemsId, mCategoryId); 
 		list.setAdapter(adapter);
 		list.setOnItemClickListener(this);
 	}

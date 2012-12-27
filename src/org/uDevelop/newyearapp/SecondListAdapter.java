@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 public class SecondListAdapter extends BaseAdapter {
 	private Context mContext;
-	private DatabaseAdapter mDbAdapter;
+	private StorageAdapter mStorageAdapter;
 	private LayoutInflater mInflater;
 	private int mCategoryId;
 	int[] mItemsId; 
@@ -23,11 +23,11 @@ public class SecondListAdapter extends BaseAdapter {
     }
 	
 	
-	public SecondListAdapter(Context context, DatabaseAdapter databaseAdapter, 
+	public SecondListAdapter(Context context, StorageAdapter storageAdapter, 
 					int[] itemsId, int categoryId) {
 		mContext = context;
 		mInflater = LayoutInflater.from(context);
-		mDbAdapter = databaseAdapter;
+		mStorageAdapter = storageAdapter;
 		mCategoryId = categoryId;
 		mItemsId = itemsId;
 	}
@@ -36,7 +36,7 @@ public class SecondListAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
 		ViewHolder holder;
 		View view = convertView;
-		ItemInfo item = mDbAdapter.getContentItem(mCategoryId, mItemsId[position]);
+		ItemInfo item = mStorageAdapter.getContentItem(mCategoryId, mItemsId[position]);
 		if (view == null) {
 			view = mInflater.inflate(R.layout.list_view_item, null);
             holder = new ViewHolder();

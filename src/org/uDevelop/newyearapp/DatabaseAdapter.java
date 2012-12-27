@@ -4,7 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-public class DatabaseAdapter {
+public class DatabaseAdapter implements StorageAdapter {
 	private static final String sGetCategoryCount = "select count (*) from category";
 	private static final String sGetCategoryName = "select name from category where _id =";
 	private static final String sGetCategoryIcon = "select icon from category where _id =";
@@ -26,11 +26,12 @@ public class DatabaseAdapter {
 		mDatabase = helper.getWritableDatabase();				
 	}
 	
+	@Override
 	public void close() {
 		mDatabase.close();
 	}
 	
-	
+	@Override
 	public int getCategoryCount() {
 		Cursor cursor =	mDatabase.rawQuery(sGetCategoryCount, null);
 		cursor.moveToFirst();
@@ -39,8 +40,9 @@ public class DatabaseAdapter {
 		return result;
 	}
 	
+	@Override
 	public String getCategoryName(int id) {
-		String query = sGetCategoryName+Integer.toString(id);
+		String query = sGetCategoryName+Integer.toString(id+1);
 		Cursor cursor =	mDatabase.rawQuery(query, null);
 		cursor.moveToFirst();
 		String result = cursor.getString(0);
@@ -48,8 +50,9 @@ public class DatabaseAdapter {
 		return result;
 	}
 	
+	@Override
 	public String getCategoryIcon(int id) {
-		String query = sGetCategoryIcon+Integer.toString(id);
+		String query = sGetCategoryIcon+Integer.toString(id+1);
 		Cursor cursor =	mDatabase.rawQuery(query, null);
 		cursor.moveToFirst();
 		String result = cursor.getString(0);
@@ -57,8 +60,9 @@ public class DatabaseAdapter {
 		return result;
 	}
 	
+	@Override
 	public CategoryInfo getCategoryInfo(int id) {
-		String query = sGetCategoryInfo+Integer.toString(id);
+		String query = sGetCategoryInfo+Integer.toString(id+1);
 		Cursor cursor =	mDatabase.rawQuery(query, null);
 		cursor.moveToFirst();
 		CategoryInfo result = new CategoryInfo();
@@ -76,8 +80,9 @@ public class DatabaseAdapter {
 		return result;
 	}
 	
+	@Override
 	public int getContentItemCountByCategory(int categoryId) {
-		String query = sGetContentItemCountByCategory+Integer.toString(categoryId); 
+		String query = sGetContentItemCountByCategory+Integer.toString(categoryId+1); 
 		Cursor cursor =	mDatabase.rawQuery(query, null);
 		cursor.moveToFirst();
 		int result = cursor.getInt(0);
@@ -87,7 +92,7 @@ public class DatabaseAdapter {
 	
 	public ItemInfo getContentItem(int id) {
 		ItemInfo item = new ItemInfo();
-		String query = sGetContentItem+Integer.toString(id);
+		String query = sGetContentItem+Integer.toString(id+1);
 		Cursor cursor =	mDatabase.rawQuery(query, null);
 		cursor.moveToFirst();
 		item.name = cursor.getString(0);
@@ -99,16 +104,17 @@ public class DatabaseAdapter {
 		return item;		
 	}
 	
-	public ItemInfo getContentItem(int categoryId, int id) { //тут id порядковый, а не из базы
+	@Override
+	public ItemInfo getContentItem(int categoryId, int id) { 
 		ItemInfo item = new ItemInfo();
-		String query = sGetAllByCategory+Integer.toString(categoryId);
+		String query = sGetAllByCategory+Integer.toString(categoryId+1);
 		Cursor cursor =	mDatabase.rawQuery(query, null);
 		cursor.moveToFirst();
 		for(int i = 0; i < id; i++) {
 			cursor.moveToNext();
 		}
 				
-		item.id = cursor.getInt(0);
+		//item.id = cursor.getInt(0);
 		item.name = cursor.getString(1);
 		item.icon = cursor.getString(2);
 		item.likeCount = cursor.getInt(3);
@@ -120,13 +126,13 @@ public class DatabaseAdapter {
 	
 	
 	public void incLikeCount(int id) {
-		String query = sGetLikeCount+Integer.toString(id);
+		String query = sGetLikeCount+Integer.toString(id+1);
 		Cursor cursor = mDatabase.rawQuery(query, null);
 		cursor.moveToFirst();
 		int count = cursor.getInt(0);
 		cursor.close();
 		count++;
-		query = sUpdateLikeCount+Integer.toString(count)+" where _id = "+Integer.toString(id);
+		query = sUpdateLikeCount+Integer.toString(count)+" where _id = "+Integer.toString(id+1);
 		mDatabase.execSQL(query);		
 	}
 	

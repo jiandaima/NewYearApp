@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 public class CustomListAdapter extends BaseAdapter {
 	private Context mContext;
-	private DatabaseAdapter mDbAdapter;
+	private StorageAdapter mAdapter;
 	private LayoutInflater mInflater;
 	private int mCategoryId;
 	
@@ -21,10 +21,10 @@ public class CustomListAdapter extends BaseAdapter {
     }
 	
 	
-	public CustomListAdapter(Context context, DatabaseAdapter databaseAdapter, int categoryId) {
+	public CustomListAdapter(Context context, StorageAdapter storageAdapter, int categoryId) {
 		mContext = context;
 		mInflater = LayoutInflater.from(context);
-		mDbAdapter = databaseAdapter;
+		mAdapter = storageAdapter;
 		mCategoryId = categoryId;
 	}
 	
@@ -32,7 +32,7 @@ public class CustomListAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
 		ViewHolder holder;
 		View view = convertView;
-		ItemInfo item = mDbAdapter.getContentItem(mCategoryId, position);
+		ItemInfo item = mAdapter.getContentItem(mCategoryId, position);
 		if (view == null) {
 			view = mInflater.inflate(R.layout.list_view_item, null);
             holder = new ViewHolder();
@@ -60,7 +60,7 @@ public class CustomListAdapter extends BaseAdapter {
 	
 	@Override
 	  public int getCount() {
-	    return mDbAdapter.getContentItemCountByCategory(mCategoryId); 
+	    return mAdapter.getContentItemCountByCategory(mCategoryId); 
 	  }
 
 	 
