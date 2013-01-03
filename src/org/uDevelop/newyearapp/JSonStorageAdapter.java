@@ -2,6 +2,7 @@ package org.uDevelop.newyearapp;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Random;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -108,6 +109,8 @@ public class JSonStorageAdapter implements StorageAdapter {
 	
 	@Override
 	public ItemInfo getContentItem(int categoryId, int id) {
+		Random rand = new Random();
+		mItems[categoryId][id].likeCount = rand.nextInt(1000);
 		return mItems[categoryId][id];
 	}
 

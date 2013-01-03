@@ -16,7 +16,9 @@ public class CustomListAdapter extends BaseAdapter {
 	private int mCategoryId;
 	
 	static class ViewHolder {
-        public TextView LikeCountTextView;
+        public TextView likeCountTextView;
+        public TextView nameTextView;
+        public ImageView icon;
         public int category;
     }
 	
@@ -36,25 +38,25 @@ public class CustomListAdapter extends BaseAdapter {
 		if (view == null) {
 			view = mInflater.inflate(R.layout.list_view_item, null);
             holder = new ViewHolder();
-            TextView name = (TextView)view.findViewById(R.id.list_view_item_text);
-            name.setText(item.name);
-            ImageView icon = (ImageView)view.findViewById(R.id.list_view_item_icon);
-            Class res = R.drawable.class;
-            int imageId = 0;
-            try {
-            	imageId= res.getField(item.icon).getInt(null);
-            }
-            catch (Exception ex) {
-            	Log.w("CustomListAdapter", ex.getMessage());
-            }
-            icon.setImageResource(imageId);
-            holder.LikeCountTextView = (TextView)view.findViewById(R.id.list_view_like_num);
+            holder.nameTextView = (TextView)view.findViewById(R.id.list_view_item_text);
+            holder.icon = (ImageView)view.findViewById(R.id.list_view_item_icon);
+            holder.likeCountTextView = (TextView)view.findViewById(R.id.list_view_like_num);
             holder.category = mCategoryId;
             view.setTag(holder);
         } else {
             holder = (ViewHolder) view.getTag();
         }
-		holder.LikeCountTextView.setText(Integer.toString(item.likeCount));
+		holder.nameTextView.setText(item.name);
+		Class res = R.drawable.class;
+        int imageId = 0;
+        try {
+        	imageId= res.getField(item.icon).getInt(null);
+        }
+        catch (Exception ex) {
+        	Log.w("CustomListAdapter", ex.getMessage());
+        }
+        holder.icon.setImageResource(imageId);
+		holder.likeCountTextView.setText(Integer.toString(item.likeCount));
         return view;
     }
 	
