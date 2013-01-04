@@ -1,15 +1,12 @@
 package org.uDevelop.newyearapp;
 
-import java.util.List;
+
 import com.viewpagerindicator.IconPagerAdapter;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.util.Log;
-import android.view.View;
+
 
 public class PagesAdapter extends FragmentPagerAdapter implements IconPagerAdapter {
 	private Page[] mPages;

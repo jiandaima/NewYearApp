@@ -20,7 +20,6 @@ import android.widget.TextView;
 
 public class ContentActivity extends Activity implements OnItemClickListener {
 	private static final int sPictureWidth = 684; //ширина картинки(большой) в px
-	private static final int sPictureHeight = 506;
 	private static final int sShareButtonRightBorder = 33; 
 	private static final int sShareButtonBottomBorder = 48; 
 	private static final int sShareButtonWidth = 100; //ширина картинки кнопки шаринга в px

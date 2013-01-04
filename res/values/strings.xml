@@ -8,5 +8,8 @@
     <string name="title_activity_activity2">Activity2</string>
     <string name="title_activity_content">ContentActivity</string>
     <string name="see">Смотрите еще:</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="title_activity_load_screen">LoadScreenActivity</string>
 
 </resources>
