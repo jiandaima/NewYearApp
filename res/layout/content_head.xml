@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="105dp"
     android:background="@drawable/background_panel_item"
-    android:padding="20dp"
+    android:padding="15dp"
     >
 
   	<ImageView
@@ -30,7 +30,7 @@
   	    android:layout_toRightOf="@id/list_view_item_icon"
   	    android:layout_centerVertical="true"
   	    android:paddingLeft="5dp"
-  	    android:textSize="20sp"
+  	    android:textSize="17sp"
   	    android:text="Text" />
 
   	<TextView
@@ -40,6 +40,6 @@
   	    android:layout_alignParentRight="true"
   	    android:layout_centerVertical="true"
   	    android:text="~"
-  	    android:textSize="20sp" />
+  	    android:textSize="17sp" />
 
 </RelativeLayout>

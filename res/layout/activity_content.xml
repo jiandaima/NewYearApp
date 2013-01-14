@@ -11,7 +11,8 @@
     <ScrollView
         android:id="@+id/scroll" 
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent" >
+        android:layout_height="fill_parent" 
+        android:scrollbars="none" >
        	
         <LinearLayout 
             android:layout_width="fill_parent"
@@ -54,50 +55,52 @@
             	android:id="@+id/_text"            
             	android:layout_width="fill_parent"
             	android:layout_height="wrap_content"
-            	android:paddingLeft="20dp"
-            	android:paddingRight="20dp"
-            	android:textSize="22sp"
+            	android:paddingLeft="15dp"
+            	android:paddingRight="15dp"
+            	android:textSize="20sp"
             	android:text="text" />
         	
-        	<Button 
+        	<ImageButton 
             	android:id="@+id/like_button"
-            	android:layout_width="wrap_content"
+            	android:layout_width="fill_parent"
             	android:layout_height="wrap_content"
             	android:layout_gravity="center"
-            	android:paddingLeft="20dp"
-            	android:paddingRight="20dp"
-            	android:background="@drawable/like_button" />  
+            	android:scaleType="fitCenter"
+            	android:paddingLeft="15dp"
+            	android:paddingRight="15dp"
+            	android:adjustViewBounds="true"
+            	android:src="@drawable/like_button"
+            	android:background="#00000000" />  
             	
         	<LinearLayout 
             	android:layout_width="fill_parent"
-            	android:layout_height="fill_parent" 
+            	android:layout_height="wrap_content" 
             	android:orientation="vertical"
-            	android:background="@drawable/background_bottom">
+            	android:background="@drawable/background_bottom" >
             	
         	    <TextView 
             	    android:layout_width="fill_parent"
             		android:layout_height="wrap_content"
             		android:textSize="30sp"
             		android:paddingTop="50dp"
-            		android:paddingLeft="20dp"
-            		android:paddingRight="20dp"
+            		android:paddingLeft="15dp"
+            		android:paddingRight="15dp"
             		android:textColor="#AA0000"
             		android:textStyle="bold"
             		android:text="@string/see"/>
         	    
-        	    <ListView 
+        	    <ListView
         	        android:id="@+id/other_items_list"
         	        android:layout_width="fill_parent"
-        	        android:listSelector="@drawable/background_list_item"
-        	        android:layout_height="320dp" 
+        	        android:layout_height="315dp"
+        	        android:scrollbars="none"
+        	        android:listSelector="@drawable/background_list_item"        	         
         	        />
             	
         	</LinearLayout>
         	
         </LinearLayout>        
                 
-    </ScrollView>
-
-    
+    </ScrollView>    
 
 </LinearLayout>

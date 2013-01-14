@@ -73,7 +73,7 @@ public class JSonStorageAdapter implements StorageAdapter {
 	}
 	
 	private String getRightText(String input) {
-		return input.replaceAll("/br/", "\n");						
+		return input.replaceAll("/br/", "\n\n");						
 	}
 	
 	

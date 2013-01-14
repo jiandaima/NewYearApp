@@ -32,6 +32,7 @@ public class ContentActivity extends Activity implements OnItemClickListener {
 	private int mCategoryId;
 	private int mIndex;
 	int[] mItemsId = new int[sListItemsCount];
+	float mMagicScaleConst = 0.90f;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -129,7 +130,7 @@ public class ContentActivity extends Activity implements OnItemClickListener {
 	void correctShareBtn() { 
 		Display display = getWindowManager().getDefaultDisplay();
 		int screenWidth = display.getWidth();
-		float scale =  screenWidth * 1f / sPictureWidth;
+		float scale =  mMagicScaleConst * screenWidth / sPictureWidth;
 		Button shareBtn = (Button) findViewById(R.id.share_button);
 		int rightBorder = (int) (sShareButtonRightBorder * scale);
 		int bottomBorder = (int) (sShareButtonBottomBorder * scale);
