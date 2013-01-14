@@ -100,6 +100,8 @@ public final class R {
 	}
 	public static final class drawable {
 		public static final int vpi__tab_selected_pressed_holo = 0x7f020064;
+		public static final int category_fun_normal = 0x7f020013;
+		public static final int category_fun_pressed = 0x7f020014;
 		public static final int vpi__tab_selected_focused_holo = 0x7f020062;
 		public static final int vpi__tab_selected_holo = 0x7f020063;
 		public static final int vpi__tab_unselected_focused_holo = 0x7f020065;

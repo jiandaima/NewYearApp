@@ -20,8 +20,8 @@ import android.widget.TextView;
 
 public class ContentActivity extends Activity implements OnItemClickListener {
 	private static final int sPictureWidth = 684; //ширина картинки(большой) в px
-	private static final int sShareButtonRightBorder = 33; 
-	private static final int sShareButtonBottomBorder = 48; 
+	private static final int sShareButtonRightBorder = 14; 
+	private static final int sShareButtonBottomBorder = 28; 
 	private static final int sShareButtonWidth = 100; //ширина картинки кнопки шаринга в px
 	private static final String sShareSubject = "Отличная идея  встречи Нового года!";
 	private static final String sShareText = "Хочу поделиться отличной идеей для встречи Нового года: ";
@@ -90,7 +90,7 @@ public class ContentActivity extends Activity implements OnItemClickListener {
         text = (TextView) findViewById(R.id._text);
         text.setText(mItem.text);        
         fillList();
-        correctShareBtn(img);
+        correctShareBtn();
         
 	}
 	
@@ -126,7 +126,7 @@ public class ContentActivity extends Activity implements OnItemClickListener {
 		scroll.fullScroll(ScrollView.FOCUS_UP);		
 	}
 	
-	void correctShareBtn(ImageView picture) { //picture - пикча, на которой сидит кнопка шары 
+	void correctShareBtn() { 
 		Display display = getWindowManager().getDefaultDisplay();
 		int screenWidth = display.getWidth();
 		float scale =  screenWidth * 1f / sPictureWidth;
