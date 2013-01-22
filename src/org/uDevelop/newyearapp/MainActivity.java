@@ -28,7 +28,9 @@ public class MainActivity extends FragmentActivity {
         pager.setAdapter(adapter);
 
         TabPageIndicator indicator = (TabPageIndicator)findViewById(R.id.page_indicator);
-        indicator.setViewPager(pager);         
+        indicator.setViewPager(pager); 
+        
+        LikeStorage likeStorage = new LikeStorage(this, mStorageAdapter);//test
     }
 	
 	@Override
