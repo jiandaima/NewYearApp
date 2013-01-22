@@ -11,10 +11,10 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
+import android.widget.RelativeLayout.LayoutParams;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -27,12 +27,14 @@ public class ContentActivity extends Activity implements OnItemClickListener {
 	private static final String sShareText = "Хочу поделиться отличной идеей для встречи Нового года: ";
 	private static final String sShareWith ="Поделиться через";
 	private static final int sListItemsCount = 3;
+	float sMagicScaleConst = 1.0f;
+	float sMagicMargin = 10f;
 	private StorageAdapter mStorageAdapter; 
 	private ItemInfo mItem;
 	private int mCategoryId;
 	private int mIndex;
 	int[] mItemsId = new int[sListItemsCount];
-	float mMagicScaleConst = 0.90f;
+	 
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -130,15 +132,17 @@ public class ContentActivity extends Activity implements OnItemClickListener {
 	void correctShareBtn() { 
 		Display display = getWindowManager().getDefaultDisplay();
 		int screenWidth = display.getWidth();
-		float scale =  mMagicScaleConst * screenWidth / sPictureWidth;
-		Button shareBtn = (Button) findViewById(R.id.share_button);
-		int rightBorder = (int) (sShareButtonRightBorder * scale);
-		int bottomBorder = (int) (sShareButtonBottomBorder * scale);
+		float scale =  sMagicScaleConst * screenWidth / sPictureWidth;
+		ImageButton shareBtn = (ImageButton) findViewById(R.id.share_button);
+		int rightBorder = (int) ((sShareButtonRightBorder + sMagicMargin) * scale);
+		int bottomBorder = (int) ((sShareButtonBottomBorder + sMagicMargin) * scale);
 		int btnWidth = (int) (sShareButtonWidth * scale);
-		shareBtn.setHeight(btnWidth);
-		shareBtn.setWidth(btnWidth);
-		RelativeLayout shareLayout = (RelativeLayout) findViewById(R.id.share_layout);
-		shareLayout.setPadding(0, 0, rightBorder, bottomBorder);				
+		LayoutParams param = (LayoutParams) shareBtn.getLayoutParams();//setsetHeight(btnWidth);
+		param.width = btnWidth;
+		param.height = btnWidth;
+		param.rightMargin = rightBorder;
+		param.bottomMargin = bottomBorder;
+		shareBtn.setLayoutParams(param);					
 	}
 	
 	public void shareContent(View view) {
