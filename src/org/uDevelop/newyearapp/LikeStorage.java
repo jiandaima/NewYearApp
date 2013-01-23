@@ -7,6 +7,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.os.AsyncTask;
 import android.util.Log;
 
 public class LikeStorage {
@@ -27,7 +30,7 @@ public class LikeStorage {
 		mFolder =  "/data/data/" + mContext.getPackageName();
 		mLikeFile = new File(mFolder+'/'+sFileName);
 		if (!mLikeFile.exists()) {
-			createLikeArr(); //Test, Test, test
+			createLikeArr(); 
 			likeArrToFile();
 		}
 		else {
@@ -122,6 +125,38 @@ public class LikeStorage {
 			//TODO: сделать сетевую отправку
 		}
 	}	
+	
+	public boolean isConnected() {
+		ConnectivityManager cm = 
+				(ConnectivityManager) mContext.getSystemService(mContext.CONNECTIVITY_SERVICE);
+		NetworkInfo info = cm.getActiveNetworkInfo();
+		if (info != null && info.isConnected()) {
+			return true;
+		}
+		return false;		
+	}
+	
+		
+	private class NetworkStorage extends AsyncTask<Like[][], Void, Like[][]> {		
+		@Override
+        protected Like[][] doInBackground(Like[][]... params) {
+			if (params.length > 0) {
+				Like[][] likeArr = params[0];
+				//TODO:TODOTODODO
+			}
+			
+			return null;           
+        }
+		
+		@Override
+        protected void onPostExecute(Like[][] result) {
+            mLikeStorage = result;
+            likeArrToFile();
+       }
+		
+		
+	}
+	
 	
 	
 	
