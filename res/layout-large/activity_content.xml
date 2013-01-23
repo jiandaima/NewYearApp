@@ -67,7 +67,8 @@
             	android:layout_marginRight="15dp"
             	android:adjustViewBounds="true"
             	android:src="@drawable/like_button"
-            	android:background="#00000000" /> 
+            	android:background="#00000000" 
+            	android:onClick="likeBtnClick" /> 
             	
         	
             	

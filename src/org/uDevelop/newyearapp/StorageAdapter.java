@@ -7,5 +7,6 @@ public interface StorageAdapter {
 	public CategoryInfo getCategoryInfo(int id);
 	public int getContentItemCountByCategory(int categoryId);
 	public ItemInfo getContentItem(int categoryId, int id);
+	public void setLiked(int categoryId, int id);
 	public void close();
 }

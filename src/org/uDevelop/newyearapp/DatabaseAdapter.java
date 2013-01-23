@@ -140,6 +140,10 @@ public class DatabaseAdapter implements StorageAdapter {
 		return mDatabase.rawQuery(query, null);
 	}
 	
+	public void setLiked(int categoryId, int id) {
+		//TODO: сделать реализацию метода
+	}
+	
 	
 	
 }

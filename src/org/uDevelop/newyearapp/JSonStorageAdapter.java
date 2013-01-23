@@ -16,12 +16,14 @@ public class JSonStorageAdapter implements StorageAdapter {
 	private Context mContext;
 	private CategoryInfo[] mCategoryInfo;
 	private ItemInfo[][] mItems;
+	private LikeStorage mLikeStorage;
 	
 	 
 	
 	public JSonStorageAdapter(Context context) {
 		mContext = context;
 		parse();
+		mLikeStorage  = new LikeStorage(context, this);
 	}
 	
 	private void parse() {
@@ -110,8 +112,14 @@ public class JSonStorageAdapter implements StorageAdapter {
 	@Override
 	public ItemInfo getContentItem(int categoryId, int id) {
 		Random rand = new Random();
-		mItems[categoryId][id].likeCount = rand.nextInt(1000);
+		Like like = mLikeStorage.getLike(categoryId, id);
+		mItems[categoryId][id].likeCount = like.count;
+		mItems[categoryId][id].likeState = like.state;
 		return mItems[categoryId][id];
+	}
+	
+	public void setLiked(int categoryId, int id) {
+		mLikeStorage.setLiked(categoryId, id);
 	}
 
 }

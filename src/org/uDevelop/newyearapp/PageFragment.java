@@ -15,6 +15,7 @@ public final class PageFragment extends Fragment implements OnItemClickListener 
     //private static final String KEY_CONTENT = "TestFragment:Content";
     private Context mContext;
     private StorageAdapter mStorageAdapter;
+    private LikeStorage mLikeStorage;
     private int index;
     
     

@@ -61,7 +61,7 @@ public class ContentActivity extends Activity implements OnItemClickListener {
 		return true;
 	}
 	
-	private void fillActivity(){
+	private void fillActivity(){ //Заполняется все, кроме ЛистВью
 		mItem = mStorageAdapter.getContentItem(mCategoryId, mIndex);
 		Class res = R.drawable.class;
 		
@@ -91,10 +91,15 @@ public class ContentActivity extends Activity implements OnItemClickListener {
         img.setImageResource(imageId);
         
         text = (TextView) findViewById(R.id._text);
-        text.setText(mItem.text);        
-        fillList();
-        correctShareBtn();
-        
+        text.setText(mItem.text); 
+        ImageButton likeBtn = (ImageButton) findViewById(R.id.like_button);
+        if (mItem.likeState == Like.NOT_LIKE) {
+        	likeBtn.setImageResource(R.drawable.button_like_normal);
+        }
+        else {
+        	likeBtn.setImageResource(R.drawable.button_like_pressed);
+        }        
+        correctShareBtn();        
 	}
 	
 	private boolean member(int[] array, int elem, int arraySize) {
@@ -153,5 +158,11 @@ public class ContentActivity extends Activity implements OnItemClickListener {
 		intent.putExtra(android.content.Intent.EXTRA_TEXT, text);
 		startActivity(Intent.createChooser(intent, sShareWith));
 	}
+	
+	public void likeBtnClick(View view) {
+		mStorageAdapter.setLiked(mCategoryId, mIndex);
+		fillActivity();
+	}
+	
 
 }
