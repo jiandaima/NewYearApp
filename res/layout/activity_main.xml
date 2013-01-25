@@ -17,12 +17,14 @@
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
             android:layout_alignParentLeft="true"
+            android:adjustViewBounds="true"
             android:src="@drawable/background_tabbar_shadow_left"/>
         
         <ImageView 
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
             android:layout_alignParentRight="true"
+             android:adjustViewBounds="true"
             android:src="@drawable/background_tabbar_shadow_right"/>        
         
         
