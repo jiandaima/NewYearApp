@@ -81,7 +81,7 @@ public class JSonStorageAdapter implements StorageAdapter {
 	
 	@Override
 	public void close() {
-		//заглушка, этот метод будет обрабатываться в DatabaseAdapter
+		
 	}
 	
 	@Override
@@ -110,16 +110,32 @@ public class JSonStorageAdapter implements StorageAdapter {
 	}
 	
 	@Override
-	public ItemInfo getContentItem(int categoryId, int id) {
-		Random rand = new Random();
-		Like like = mLikeStorage.getLike(categoryId, id);
-		mItems[categoryId][id].likeCount = like.count;
-		mItems[categoryId][id].likeState = like.state;
+	public ItemInfo getContentItem(int categoryId, int id) {		
 		return mItems[categoryId][id];
+	}
+	
+	@Override
+	public Like getItemLike(int categoryId, int id) {
+		return mLikeStorage.getLike(categoryId, id);		
 	}
 	
 	public void setLiked(int categoryId, int id) {
 		mLikeStorage.setLiked(categoryId, id);
+	}
+	
+	@Override
+	public void registerDataListener(DataListener listener) {
+		mLikeStorage.registerDataListener(listener);
+	}
+	
+	@Override
+	public void unregisterDataListener(DataListener listener) {
+		mLikeStorage.unregisterDataListener(listener);
+	}
+	
+	@Override
+	public void syncronize() {
+		mLikeStorage.SyncLikeStorage();
 	}
 
 }

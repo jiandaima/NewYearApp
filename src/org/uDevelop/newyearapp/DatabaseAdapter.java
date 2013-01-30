@@ -97,7 +97,7 @@ public class DatabaseAdapter implements StorageAdapter {
 		cursor.moveToFirst();
 		item.name = cursor.getString(0);
 		item.icon = cursor.getString(1);
-		item.likeCount = cursor.getInt(2);
+		//item.likeCount = cursor.getInt(2);
 		item.picture = cursor.getString(3);
 		item.text = cursor.getString(4);
 		cursor.close();		
@@ -117,7 +117,7 @@ public class DatabaseAdapter implements StorageAdapter {
 		//item.id = cursor.getInt(0);
 		item.name = cursor.getString(1);
 		item.icon = cursor.getString(2);
-		item.likeCount = cursor.getInt(3);
+		//item.likeCount = cursor.getInt(3);
 		item.picture = cursor.getString(4);
 		item.text = cursor.getString(5);
 		cursor.close();		
@@ -142,6 +142,27 @@ public class DatabaseAdapter implements StorageAdapter {
 	
 	public void setLiked(int categoryId, int id) {
 		//TODO: сделать реализацию метода
+	}
+	
+	@Override
+	public Like getItemLike(int categoryId, int id) {
+		//TODO: сделать реализацию метода
+		return null;
+	}
+	
+	@Override
+	public void registerDataListener(DataListener listener) {
+		//TODO:
+	}
+	
+	@Override
+	public void unregisterDataListener(DataListener listener) {
+		//TODO:
+	}
+	
+	@Override
+	public void syncronize() {
+		//TODO:
 	}
 	
 	

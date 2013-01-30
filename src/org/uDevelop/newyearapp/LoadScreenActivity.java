@@ -19,6 +19,8 @@ public class LoadScreenActivity extends Activity {
 		setContentView(R.layout.activity_load_screen);
 		mTimer = new Timer(); 
 		mContext = this;
+		StorageAdapter storage = new JSonStorageAdapter(this);
+		storage.syncronize();
 		mTimer.schedule(new TimerBody(), sDelay); 		
 	}
 	

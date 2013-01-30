@@ -17,7 +17,7 @@ public class PagesAdapter extends FragmentPagerAdapter implements IconPagerAdapt
     
     @Override
     public Fragment getItem(int position) {
-        return mPages[position].page;
+    	return mPages[position].page;
     }
 
     @Override
@@ -26,11 +26,11 @@ public class PagesAdapter extends FragmentPagerAdapter implements IconPagerAdapt
     }
 
     @Override public int getIconResId(int position) {
-      return mPages[position].iconId;
+    	return mPages[position].iconId;
     }
 
   @Override
-    public int getCount() {
-      return mPages.length;
-    }   
+  public int getCount() {
+	  return mPages.length;
+  }   
 }

@@ -10,7 +10,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class SecondListAdapter extends BaseAdapter {
+public class SecondListAdapter extends BaseAdapter implements DataListener{
 	private Context mContext;
 	private StorageAdapter mStorageAdapter;
 	private LayoutInflater mInflater;
@@ -28,6 +28,7 @@ public class SecondListAdapter extends BaseAdapter {
 		mContext = context;
 		mInflater = LayoutInflater.from(context);
 		mStorageAdapter = storageAdapter;
+		mStorageAdapter.registerDataListener(this);
 		mCategoryId = categoryId;
 		mItemsId = itemsId;
 	}
@@ -37,6 +38,7 @@ public class SecondListAdapter extends BaseAdapter {
 		ViewHolder holder;
 		View view = convertView;
 		ItemInfo item = mStorageAdapter.getContentItem(mCategoryId, mItemsId[position]);
+		Like like = mStorageAdapter.getItemLike(mCategoryId, mItemsId[position]);
 		if (view == null) {
 			view = mInflater.inflate(R.layout.list_view_item, null);
             holder = new ViewHolder();
@@ -58,7 +60,8 @@ public class SecondListAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) view.getTag();
         }
-		holder.LikeCountTextView.setText(Integer.toString(item.likeCount));
+		
+		holder.LikeCountTextView.setText(Integer.toString(like.count));
         return view;
     }
 	
@@ -81,5 +84,9 @@ public class SecondListAdapter extends BaseAdapter {
 	public int getCategory() {
 		return mCategoryId;
 	}
-
+	
+	@Override
+	public void onUpdateData() {
+		this.notifyDataSetChanged();
+	}
 }

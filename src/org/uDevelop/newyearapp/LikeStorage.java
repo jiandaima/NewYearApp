@@ -6,12 +6,19 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
@@ -25,19 +32,22 @@ public class LikeStorage {
 	
 	private final static String FILE_NAME = "likeStorage";
 	private final static String SERVER_URL = "http://193.232.50.9/likes/get.json";
+	private final static String SEND_PREFIX = "http://193.232.50.9/likes/add_like.json?name=";
 	private final static int READ_TIMEOUT = 5000;
 	private final static int CONNECT_TIMEOUT = 10000;
 	
 	private String mFolder;
 	private Context mContext;
 	private StorageAdapter mStorage;
-	private Like[][] mLikeStorage;
+	private static Like[][] mLikeStorage;
 	private File mLikeFile;
-	private NetworkStorage netStorage;
+	private static NetworkStorage netStorage;
+	private ArrayList<DataListener> mDataListeners;
 	
 	
 	
 	public LikeStorage(Context context, StorageAdapter storage) {
+		mDataListeners = new ArrayList<DataListener>();
 		mContext = context;
 		mStorage = storage;
 		mFolder =  Environment.getDataDirectory()+"/data/" + mContext.getPackageName();
@@ -49,9 +59,27 @@ public class LikeStorage {
 		else {
 			likeFileToArr();
 		}
-		netStorage = new NetworkStorage();
-		SyncLikeStorage();
+		if (netStorage == null) {
+			netStorage = new NetworkStorage();
+		}
 	}	
+	
+	
+	public void registerDataListener(DataListener listener) {
+		mDataListeners.add(listener);
+	}
+	
+	public void unregisterDataListener(DataListener listener) {
+		if (mDataListeners.contains(listener)) {
+			mDataListeners.remove(listener);
+		}		
+	}
+	
+	private void notifyDataSetChanged() {
+		for(DataListener listener: mDataListeners) {
+			listener.onUpdateData();
+		}
+	}
 	
 	private void createLikeArr() {
 		int categoryCount = mStorage.getCategoryCount();
@@ -135,16 +163,19 @@ public class LikeStorage {
 	}
 	
 	public void SyncLikeStorage() {
+		notifyDataSetChanged();
 		Status status = netStorage.getStatus();
 		if (status != Status.RUNNING) {
+			netStorage = new NetworkStorage();
 			netStorage.execute(mLikeStorage);
-		}
+		}		
 	}
 	
 	public void setLiked(int categoryId, int elementId) {
 		if (mLikeStorage[categoryId][elementId].state == Like.NOT_LIKE) {
+			notifyDataSetChanged();
 			setLikedLocal(categoryId, elementId);
-			//TODO: сделать сетевую отправку
+			SyncLikeStorage();
 		}
 	}	
 	
@@ -155,32 +186,32 @@ public class LikeStorage {
 		if (info != null && info.isConnected()) {
 			return true;
 		}
-		return false;		
+		else {
+			return false;
+		}
 	}
 	
 		
-	private class NetworkStorage extends AsyncTask<Like[][], Void, Like[][]> {		
+	private class NetworkStorage extends AsyncTask<Like[][], Void, Void> {		
 		@Override
-        protected Like[][] doInBackground(Like[][]... params) {
+        protected Void doInBackground(Like[][]... params) {
 			if (params.length > 0) {
 				Like[][] likeArr = params[0];
 				if (isConnected()) {
-					//pushToServer
+					pushToServer(likeArr);
 					pullFromServer(likeArr);
 				}
 				likeArrToFile();				
-			}
-			
+			}			
 			return null;           
         }
 		
-		/*@Override
-        protected void onPostExecute(Like[][] result) {
-            mLikeStorage = result;
-            likeArrToFile();
-       }*/
+		@Override
+        protected void onPostExecute(Void result) {
+			notifyDataSetChanged() ;
+		}
 		
-		private void PushToServer(Like[][] likeArr) {
+		private void pushToServer(Like[][] likeArr) {
 			int categoryCount = likeArr.length;
 			for(int i = 0; i < categoryCount; i++) {
 				int count = likeArr[i].length;
@@ -188,15 +219,35 @@ public class LikeStorage {
 					Like like = likeArr[i][j];
 					if (like.state == Like.SEND_LIKE) {
 						ItemInfo item = mStorage.getContentItem(i, j);
-						pushLikeToServer(item.name);
+						if (pushLikeToServer(item.name)) {
+							likeArr[i][j].state = Like.LIKE;
+						}
+						else {
+							return;
+						}
 					}
 				}				
 			}
 		}		
 		
-		private void pushLikeToServer(String name) {
-			//TODO: fill_it
-		}
+		private boolean pushLikeToServer(String name) {
+			String trueName = name.replace(' ', '+');
+			HttpClient client = new DefaultHttpClient();
+			HttpGet request = new HttpGet(SEND_PREFIX+trueName);
+			try {
+				HttpResponse response = client.execute(request);
+				Log.w("LikeStorage[sendLike][response]", response.getEntity().toString());
+			} 
+			catch (ClientProtocolException e) {
+				Log.w("LikeStorage[sendLike]", e.getMessage());
+				return false;				
+			} 
+			catch (IOException e) {
+				Log.w("LikeStorage[sendLike]", e.getMessage());
+				return false;	
+			}
+			return true;
+		}		
 		
 		private boolean pullFromServer(Like[][] likeArr) {
 			boolean result = true;
@@ -231,27 +282,64 @@ public class LikeStorage {
 		}
 		
 		private void parseAndAdd(InputStream input, Like[][] likeArr) {
-			byte [] buffer = null;
+			InputStreamReader reader = null;
 			try {
-				buffer = new byte[input.available()];
-				while (input.read(buffer) != -1);
-			}
-			catch (IOException ex) {
-				Log.w("JSONAdapter get from Buffer", ex.getMessage());
+				reader = new InputStreamReader(input, "UTF-8");
+			} 
+			catch(UnsupportedEncodingException ex) {
+				Log.w("LikeStorage", ex.getMessage());
 				return;
 			}
-	        String jsonData = new String(buffer);
+			String jsonData = "";
+			try {				
+				int in = reader.read(); 			
+				while (in > -1 ) {
+					jsonData = jsonData + (char) in;
+					in = reader.read();
+				}				
+			}
+			catch (IOException ex) {
+				Log.w("LikeStorage", ex.getMessage());
+				return;
+			}	        
 	        try {
-	        	JSONArray root = new JSONArray(jsonData); 
-	        	int count = root.length(); 
+	        	JSONArray root = new JSONArray(jsonData);
+	        	int count = root.length();
+	        	for(int i = 0; i < count; i++) {
+	        		JSONArray record = root.getJSONArray(i);
+	        		String name = record.getString(0);
+	        		int likeCount = (int) Math.round(record.getDouble(1));
+	        		int[] indexes = getIndexesByName(name);
+	        		if (indexes != null) {
+	        			int categoryId = indexes[0];
+	        			int elemId = indexes[1];
+	        			mLikeStorage[categoryId][elemId].count = likeCount;
+	        		}
+	        	}
 	        }
 	        catch(JSONException ex) {
 	        	Log.w("LikeStorage[parseAndAdd]", ex.getMessage());
 	        	return;
-	        }
-	        	
-			
+	        }			
 		}
+		
+		private int[] getIndexesByName(String name) { //if found then [categoryId, elementId] else null
+			int[] result = null;
+			int categoryCount = mLikeStorage.length;
+			for(int i = 0; i < categoryCount; i++) {
+				int count = mLikeStorage[i].length;
+				for(int j = 0; j < count; j++) {
+					ItemInfo item = mStorage.getContentItem(i, j);
+					if (name.equalsIgnoreCase(item.name)) {
+						result = new int[2];
+						result[0] = i;
+						result[1] = j;
+						return result;						
+					}
+				}
+			}			
+			return result;			
+		}		
 	}
 	
 	

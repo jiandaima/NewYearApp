@@ -1,6 +1,9 @@
 package org.uDevelop.newyearapp;
 
+import java.util.Observer;
+
 import android.content.Context;
+import android.database.Observable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,7 +12,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class CustomListAdapter extends BaseAdapter {
+public class CustomListAdapter extends BaseAdapter implements DataListener {
 	private Context mContext;
 	private StorageAdapter mAdapter;
 	private LayoutInflater mInflater;
@@ -27,7 +30,8 @@ public class CustomListAdapter extends BaseAdapter {
 		mContext = context;
 		mInflater = LayoutInflater.from(context);
 		mAdapter = storageAdapter;
-		mCategoryId = categoryId;
+		mAdapter.registerDataListener(this);
+		mCategoryId = categoryId;	 
 	}
 	
 	@Override
@@ -35,6 +39,7 @@ public class CustomListAdapter extends BaseAdapter {
 		ViewHolder holder;
 		View view = convertView;
 		ItemInfo item = mAdapter.getContentItem(mCategoryId, position);
+		Like like = mAdapter.getItemLike(mCategoryId, position);
 		if (view == null) {
 			view = mInflater.inflate(R.layout.list_view_item, null);
             holder = new ViewHolder();
@@ -56,7 +61,7 @@ public class CustomListAdapter extends BaseAdapter {
         	Log.w("CustomListAdapter", ex.getMessage());
         }
         holder.icon.setImageResource(imageId);
-		holder.likeCountTextView.setText(Integer.toString(item.likeCount));
+		holder.likeCountTextView.setText(Integer.toString(like.count));
         return view;
     }
 	
@@ -78,6 +83,11 @@ public class CustomListAdapter extends BaseAdapter {
 	
 	public int getCategory() {
 		return mCategoryId;
+	}	
+	
+	@Override
+	public void onUpdateData() {
+		this.notifyDataSetChanged();
 	}
 
 }

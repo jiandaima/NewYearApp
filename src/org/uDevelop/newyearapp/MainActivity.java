@@ -6,12 +6,15 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnTouchListener;
 
 import com.viewpagerindicator.TabPageIndicator;
 
 public class MainActivity extends FragmentActivity {
 	private StorageAdapter mStorageAdapter; 
+	private FragmentPagerAdapter mAdapter;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -22,14 +25,22 @@ public class MainActivity extends FragmentActivity {
         //mStorageAdapter = new DatabaseAdapter(this);
         mStorageAdapter = new JSonStorageAdapter(this);
         Page[] pages = getPages();
-        FragmentPagerAdapter adapter = new PagesAdapter(this.getSupportFragmentManager(), pages);
+        mAdapter = new PagesAdapter(this.getSupportFragmentManager(), pages);
         
         ViewPager pager = (ViewPager)findViewById(R.id.pages);
-        pager.setAdapter(adapter);
+        pager.setAdapter(mAdapter);  
 
         TabPageIndicator indicator = (TabPageIndicator)findViewById(R.id.page_indicator);
-        indicator.setViewPager(pager);        
+        indicator.setViewPager(pager);  
+        indicator.setOnTouchListener(new OnTouch()); //убираем скролл при касании
     }
+	
+	private class OnTouch implements OnTouchListener {
+		@Override
+		public boolean onTouch(View v, MotionEvent event) {
+			return true;
+		}
+	}
 	
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
@@ -40,7 +51,13 @@ public class MainActivity extends FragmentActivity {
     public void onDestroy(){
 		mStorageAdapter.close();
 		super.onDestroy();
-    }
+    }	
+	
+	@Override 
+	public void onResume() {
+		super.onResume();
+		mStorageAdapter.syncronize();
+	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {

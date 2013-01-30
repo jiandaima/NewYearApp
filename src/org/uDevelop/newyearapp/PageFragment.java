@@ -16,14 +16,14 @@ public final class PageFragment extends Fragment implements OnItemClickListener 
     private Context mContext;
     private StorageAdapter mStorageAdapter;
     private LikeStorage mLikeStorage;
-    private int index;
+    private CustomListAdapter mCAdapter;   
     
     
-    public PageFragment(Context context, StorageAdapter adapter, int _index) {
+    public PageFragment(Context context, StorageAdapter adapter, int index) {
     	super();
     	mContext = context;
     	mStorageAdapter = adapter;
-    	index = _index;
+    	mCAdapter = new CustomListAdapter(mContext, mStorageAdapter, index);
     }
 
         //private String mContent = "???";
@@ -38,8 +38,7 @@ public final class PageFragment extends Fragment implements OnItemClickListener 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     	View page = inflater.inflate(R.layout.bodylayout, null);
     	ListView list = (ListView)page.findViewById(R.id.list_view);        	
-    	CustomListAdapter cAdapter = new CustomListAdapter(mContext, mStorageAdapter, index);
-    	list.setAdapter(cAdapter); 
+    	list.setAdapter(mCAdapter); 
     	list.setOnItemClickListener(this); 
         return page;
     }
@@ -56,5 +55,5 @@ public final class PageFragment extends Fragment implements OnItemClickListener 
 		intent.putExtra(Consts.CATETORY, holder.category);
 		intent.putExtra(Consts.ITEM_INDEX, position);
 		startActivity(intent);
-	}    
+	}     
 }

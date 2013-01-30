@@ -63,6 +63,7 @@ public class ContentActivity extends Activity implements OnItemClickListener {
 	
 	private void fillActivity(){ //Заполняется все, кроме ЛистВью
 		mItem = mStorageAdapter.getContentItem(mCategoryId, mIndex);
+		Like like = mStorageAdapter.getItemLike(mCategoryId, mIndex);
 		Class res = R.drawable.class;
 		
 		int imageId = 0;
@@ -79,7 +80,7 @@ public class ContentActivity extends Activity implements OnItemClickListener {
         text.setText(mItem.name);     
         
         text = (TextView) findViewById(R.id.list_view_like_num);
-        text.setText(Integer.toString(mItem.likeCount));	
+        text.setText(Integer.toString(like.count));	
         
         try {
         	imageId= res.getField(mItem.picture).getInt(null);
@@ -93,7 +94,7 @@ public class ContentActivity extends Activity implements OnItemClickListener {
         text = (TextView) findViewById(R.id._text);
         text.setText(mItem.text); 
         ImageButton likeBtn = (ImageButton) findViewById(R.id.like_button);
-        if (mItem.likeState == Like.NOT_LIKE) {
+        if (like.state == Like.NOT_LIKE) {
         	likeBtn.setImageResource(R.drawable.button_like_normal);
         }
         else {
@@ -130,6 +131,7 @@ public class ContentActivity extends Activity implements OnItemClickListener {
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		mIndex = mItemsId[position];
 		fillActivity();
+		fillList();
 		ScrollView scroll = (ScrollView) findViewById(R.id.scroll);
 		scroll.fullScroll(ScrollView.FOCUS_UP);		
 	}
