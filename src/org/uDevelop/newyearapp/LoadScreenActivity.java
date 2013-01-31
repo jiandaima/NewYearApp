@@ -11,7 +11,8 @@ import android.os.Bundle;
 public class LoadScreenActivity extends Activity {
 	private final static long sDelay = 2200; //delay in ms
 	private Timer mTimer;
-	private Context mContext; 	
+	private Context mContext; 
+	private StorageAdapter mStorage;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -19,9 +20,15 @@ public class LoadScreenActivity extends Activity {
 		setContentView(R.layout.activity_load_screen);
 		mTimer = new Timer(); 
 		mContext = this;
-		StorageAdapter storage = new JSonStorageAdapter(this);
-		storage.syncronize();
+		mStorage = new JSonStorageAdapter(this);
+		mStorage.syncronize();
 		mTimer.schedule(new TimerBody(), sDelay); 		
+	}
+	
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		mStorage.close();
 	}
 	
 	private class TimerBody extends TimerTask {

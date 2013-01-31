@@ -15,12 +15,14 @@ public class JSonStorageAdapter implements StorageAdapter {
 	private Context mContext;
 	private CategoryInfo[] mCategoryInfo;
 	private ItemInfo[][] mItems;
-	private LikeStorage mLikeStorage;	 
+	private static LikeStorage sLikeStorage;	 
 	
 	public JSonStorageAdapter(Context context) {
 		mContext = context;
 		parse();
-		mLikeStorage  = new LikeStorage(context, this);
+		if (sLikeStorage == null) {
+			sLikeStorage = new LikeStorage(context, this);
+		}
 	}
 	
 	private void parse() {
@@ -75,7 +77,7 @@ public class JSonStorageAdapter implements StorageAdapter {
 		
 	@Override
 	public void close() {
-		
+		//
 	}
 	
 	@Override
@@ -110,25 +112,25 @@ public class JSonStorageAdapter implements StorageAdapter {
 	
 	@Override
 	public Like getItemLike(int categoryId, int id) {
-		return mLikeStorage.getLike(categoryId, id);		
+		return sLikeStorage.getLike(categoryId, id);		
 	}
 	
 	public void setLiked(int categoryId, int id) {
-		mLikeStorage.setLiked(categoryId, id);
+		sLikeStorage.setLiked(categoryId, id);
 	}
 	
 	@Override
 	public void registerDataListener(DataListener listener) {
-		mLikeStorage.registerDataListener(listener);
+		sLikeStorage.registerDataListener(listener);
 	}
 	
 	@Override
 	public void unregisterDataListener(DataListener listener) {
-		mLikeStorage.unregisterDataListener(listener);
+		sLikeStorage.unregisterDataListener(listener);
 	}
 	
 	@Override
 	public void syncronize() {
-		mLikeStorage.SyncLikeStorage();
+		sLikeStorage.SyncLikeStorage();
 	}
 }

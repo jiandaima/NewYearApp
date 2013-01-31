@@ -48,10 +48,10 @@ public class ContentActivity extends Activity implements OnItemClickListener {
 	}
 	
 	@Override
-    public void onDestroy(){
-		mStorageAdapter.close();
+	protected void onDestroy() {
 		super.onDestroy();
-    }
+		mStorageAdapter.close();
+	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {

@@ -48,10 +48,10 @@ public class MainActivity extends FragmentActivity {
 	}
 	
 	@Override
-    public void onDestroy(){
-		mStorageAdapter.close();
+	protected void onDestroy() {
 		super.onDestroy();
-    }	
+		mStorageAdapter.close();
+	}
 	
 	@Override 
 	public void onResume() {

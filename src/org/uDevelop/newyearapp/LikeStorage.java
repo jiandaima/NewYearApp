@@ -51,7 +51,7 @@ public class LikeStorage {
 		mFolder = Environment.getDataDirectory() + "/data/" + mContext.getPackageName();
 		mLikeFile = new File(mFolder + '/' + FILE_NAME);
 		if (!mLikeFile.exists()) {
-			createLikeArr(); 
+			createLikeArr();
 			likeArrToFile();
 		}
 		else {
@@ -60,8 +60,8 @@ public class LikeStorage {
 		if (netStorage == null) {
 			netStorage = new NetworkStorage();
 		}
-	}	
-		
+	}
+			
 	public void registerDataListener(DataListener listener) {
 		mDataListeners.add(listener);
 	}
@@ -199,14 +199,14 @@ public class LikeStorage {
 				if (isConnected()) {
 					pushToServer(likeArr);
 					pullFromServer(likeArr);
-				}
-				likeArrToFile();				
+				}								
 			}			
 			return null;           
         }
 		
 		@Override
         protected void onPostExecute(Void result) {
+			likeArrToFile();
 			notifyDataSetChanged() ;
 		}
 		

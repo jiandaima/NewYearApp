@@ -10,7 +10,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class SecondListAdapter extends BaseAdapter implements DataListener{
+public class SecondListAdapter extends BaseAdapter {
 	private StorageAdapter mStorageAdapter;
 	private LayoutInflater mInflater;
 	private int mCategoryId;
@@ -26,7 +26,6 @@ public class SecondListAdapter extends BaseAdapter implements DataListener{
 					int[] itemsId, int categoryId) {
 		mInflater = LayoutInflater.from(context);
 		mStorageAdapter = storageAdapter;
-		mStorageAdapter.registerDataListener(this);
 		mCategoryId = categoryId;
 		mItemsId = itemsId;
 	}
@@ -82,10 +81,5 @@ public class SecondListAdapter extends BaseAdapter implements DataListener{
 	
 	public int getCategory() {
 		return mCategoryId;
-	}
-	
-	@Override
-	public void onUpdateData() {
-		this.notifyDataSetChanged();
-	}
+	}	
 }
