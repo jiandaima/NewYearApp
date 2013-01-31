@@ -79,7 +79,7 @@ public class MainActivity extends FragmentActivity {
         Page[] pages = new Page[tabCount];                
         for(int i = 0; i < tabCount; i++) {
         	String icon = mStorageAdapter.getCategoryIcon(i);
-        	Class res = R.drawable.class;
+        	Class<R.drawable> res = R.drawable.class;
             int imageId = 0;
             try {
             	imageId= res.getField(icon).getInt(null);

@@ -12,26 +12,20 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
 public final class PageFragment extends Fragment implements OnItemClickListener {
-    //private static final String KEY_CONTENT = "TestFragment:Content";
     private Context mContext;
     private StorageAdapter mStorageAdapter;
-    private LikeStorage mLikeStorage;
     private CustomListAdapter mCAdapter;   
     
     
     public PageFragment(Context context, StorageAdapter adapter, int index) {
-    	super();
     	mContext = context;
     	mStorageAdapter = adapter;
     	mCAdapter = new CustomListAdapter(mContext, mStorageAdapter, index);
     }
-
-        //private String mContent = "???";
-
+       
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-      
+        super.onCreate(savedInstanceState); 
     }
 
     @Override
@@ -45,8 +39,7 @@ public final class PageFragment extends Fragment implements OnItemClickListener 
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        //outState.putString(KEY_CONTENT, mContent);
+        super.onSaveInstanceState(outState);        
     }
     
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

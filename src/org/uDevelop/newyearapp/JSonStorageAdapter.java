@@ -2,7 +2,6 @@ package org.uDevelop.newyearapp;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Random;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -16,9 +15,7 @@ public class JSonStorageAdapter implements StorageAdapter {
 	private Context mContext;
 	private CategoryInfo[] mCategoryInfo;
 	private ItemInfo[][] mItems;
-	private LikeStorage mLikeStorage;
-	
-	 
+	private LikeStorage mLikeStorage;	 
 	
 	public JSonStorageAdapter(Context context) {
 		mContext = context;
@@ -28,20 +25,17 @@ public class JSonStorageAdapter implements StorageAdapter {
 	
 	private void parse() {
 		InputStream input = null;
+		byte [] buffer = null;
 		try {
 			input = mContext.getAssets().open(Consts.DATA_FILE_NAME);
+			buffer = new byte[input.available()];
+			while (input.read(buffer) != -1);
+			
 		}
 		catch (IOException ex) {
 			Log.w("JSONAdapter", ex.getMessage());
-		}
-		byte [] buffer = null;
-		try {
-			buffer = new byte[input.available()];
-			while (input.read(buffer) != -1);
-		}
-		catch (IOException ex) {
-			Log.w("JSONAdapter get from Buffer", ex.getMessage());
-		}
+			android.os.Process.killProcess(android.os.Process.myPid());
+		}		
         String jsonData = new String(buffer);
         try {
         	JSONObject root = new JSONObject(jsonData);
@@ -70,15 +64,15 @@ public class JSonStorageAdapter implements StorageAdapter {
         	}       	
         }
         catch (JSONException ex) {
-        	Log.w("JSONAdapter[Err]:", ex.getMessage());        	
+        	Log.w("JSONAdapter[Err]:", ex.getMessage());
+        	android.os.Process.killProcess(android.os.Process.myPid());
         }	
 	}
 	
 	private String getRightText(String input) {
 		return input.replaceAll("/br/", "\n\n");						
 	}
-	
-	
+		
 	@Override
 	public void close() {
 		
@@ -137,5 +131,4 @@ public class JSonStorageAdapter implements StorageAdapter {
 	public void syncronize() {
 		mLikeStorage.SyncLikeStorage();
 	}
-
 }

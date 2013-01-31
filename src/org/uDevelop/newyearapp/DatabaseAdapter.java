@@ -5,19 +5,19 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 public class DatabaseAdapter implements StorageAdapter {
-	private static final String sGetCategoryCount = "select count (*) from category";
-	private static final String sGetCategoryName = "select name from category where _id =";
-	private static final String sGetCategoryIcon = "select icon from category where _id =";
-	private static final String sGetCategoryInfo = "select name, icon from category where _id =";
-	private static final String sGetContentItemCount = "select count (*) from content";
-	private static final String sGetContentItemCountByCategory = 
+	private static final String GET_CATEGORY_COUNT = "select count (*) from category";
+	private static final String GET_CATEGORY_NAME = "select name from category where _id =";
+	private static final String GET_CATEGORY_ICON = "select icon from category where _id =";
+	private static final String GET_CATEGORY_INFO = "select name, icon from category where _id =";
+	private static final String GET_CONTENT_ITEM_COUNT = "select count (*) from content";
+	private static final String GET_CONTENT_ITEM_COUNT_BY_CATEGORY = 
 				"select count (*) from content where category_id =";
-	private static final String sGetContentItem = 
+	private static final String GET_CONTENT_ITEM = 
 				"select name, icon, likeCount, picture, _text from content where _id ="; 
 			public String name;
-	private static final String  sGetLikeCount = "select likeCount from content where _id =";
-	private static final String sUpdateLikeCount = "update content set likeCount = ";
-	private static final String sGetAllByCategory = 
+	private static final String  GET_LIKE_COUNT = "select likeCount from content where _id =";
+	private static final String UPDATE_LIKE_COUNT = "update content set likeCount = ";
+	private static final String GET_ALL_BY_CATEGORY = 
 				"select _id, name, icon, likeCount, picture, _text from content where category_id = ";
 	private SQLiteDatabase mDatabase;	
 	
@@ -33,7 +33,7 @@ public class DatabaseAdapter implements StorageAdapter {
 	
 	@Override
 	public int getCategoryCount() {
-		Cursor cursor =	mDatabase.rawQuery(sGetCategoryCount, null);
+		Cursor cursor =	mDatabase.rawQuery(GET_CATEGORY_COUNT, null);
 		cursor.moveToFirst();
 		int result = cursor.getInt(0);
 		cursor.close();
@@ -42,7 +42,7 @@ public class DatabaseAdapter implements StorageAdapter {
 	
 	@Override
 	public String getCategoryName(int id) {
-		String query = sGetCategoryName+Integer.toString(id+1);
+		String query = GET_CATEGORY_NAME+Integer.toString(id+1);
 		Cursor cursor =	mDatabase.rawQuery(query, null);
 		cursor.moveToFirst();
 		String result = cursor.getString(0);
@@ -52,7 +52,7 @@ public class DatabaseAdapter implements StorageAdapter {
 	
 	@Override
 	public String getCategoryIcon(int id) {
-		String query = sGetCategoryIcon+Integer.toString(id+1);
+		String query = GET_CATEGORY_ICON+Integer.toString(id+1);
 		Cursor cursor =	mDatabase.rawQuery(query, null);
 		cursor.moveToFirst();
 		String result = cursor.getString(0);
@@ -62,7 +62,7 @@ public class DatabaseAdapter implements StorageAdapter {
 	
 	@Override
 	public CategoryInfo getCategoryInfo(int id) {
-		String query = sGetCategoryInfo+Integer.toString(id+1);
+		String query = GET_CATEGORY_INFO+Integer.toString(id+1);
 		Cursor cursor =	mDatabase.rawQuery(query, null);
 		cursor.moveToFirst();
 		CategoryInfo result = new CategoryInfo();
@@ -73,7 +73,7 @@ public class DatabaseAdapter implements StorageAdapter {
 	}
 	
 	public int getContentItemCount() {
-		Cursor cursor =	mDatabase.rawQuery(sGetContentItemCount, null);
+		Cursor cursor =	mDatabase.rawQuery(GET_CONTENT_ITEM_COUNT, null);
 		cursor.moveToFirst();
 		int result = cursor.getInt(0);
 		cursor.close();
@@ -82,7 +82,7 @@ public class DatabaseAdapter implements StorageAdapter {
 	
 	@Override
 	public int getContentItemCountByCategory(int categoryId) {
-		String query = sGetContentItemCountByCategory+Integer.toString(categoryId+1); 
+		String query = GET_CONTENT_ITEM_COUNT_BY_CATEGORY+Integer.toString(categoryId+1); 
 		Cursor cursor =	mDatabase.rawQuery(query, null);
 		cursor.moveToFirst();
 		int result = cursor.getInt(0);
@@ -92,12 +92,11 @@ public class DatabaseAdapter implements StorageAdapter {
 	
 	public ItemInfo getContentItem(int id) {
 		ItemInfo item = new ItemInfo();
-		String query = sGetContentItem+Integer.toString(id+1);
+		String query = GET_CONTENT_ITEM+Integer.toString(id+1);
 		Cursor cursor =	mDatabase.rawQuery(query, null);
 		cursor.moveToFirst();
 		item.name = cursor.getString(0);
 		item.icon = cursor.getString(1);
-		//item.likeCount = cursor.getInt(2);
 		item.picture = cursor.getString(3);
 		item.text = cursor.getString(4);
 		cursor.close();		
@@ -107,17 +106,15 @@ public class DatabaseAdapter implements StorageAdapter {
 	@Override
 	public ItemInfo getContentItem(int categoryId, int id) { 
 		ItemInfo item = new ItemInfo();
-		String query = sGetAllByCategory+Integer.toString(categoryId+1);
+		String query = GET_ALL_BY_CATEGORY+Integer.toString(categoryId+1);
 		Cursor cursor =	mDatabase.rawQuery(query, null);
 		cursor.moveToFirst();
 		for(int i = 0; i < id; i++) {
 			cursor.moveToNext();
 		}
 				
-		//item.id = cursor.getInt(0);
 		item.name = cursor.getString(1);
 		item.icon = cursor.getString(2);
-		//item.likeCount = cursor.getInt(3);
 		item.picture = cursor.getString(4);
 		item.text = cursor.getString(5);
 		cursor.close();		
@@ -126,13 +123,13 @@ public class DatabaseAdapter implements StorageAdapter {
 	
 	
 	public void incLikeCount(int id) {
-		String query = sGetLikeCount+Integer.toString(id+1);
+		String query = GET_LIKE_COUNT+Integer.toString(id+1);
 		Cursor cursor = mDatabase.rawQuery(query, null);
 		cursor.moveToFirst();
 		int count = cursor.getInt(0);
 		cursor.close();
 		count++;
-		query = sUpdateLikeCount+Integer.toString(count)+" where _id = "+Integer.toString(id+1);
+		query = UPDATE_LIKE_COUNT+Integer.toString(count)+" where _id = "+Integer.toString(id+1);
 		mDatabase.execSQL(query);		
 	}
 	
@@ -163,8 +160,5 @@ public class DatabaseAdapter implements StorageAdapter {
 	@Override
 	public void syncronize() {
 		//TODO:
-	}
-	
-	
-	
+	}	
 }

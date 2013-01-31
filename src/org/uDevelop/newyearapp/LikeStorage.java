@@ -43,15 +43,13 @@ public class LikeStorage {
 	private File mLikeFile;
 	private static NetworkStorage netStorage;
 	private ArrayList<DataListener> mDataListeners;
-	
-	
-	
+		
 	public LikeStorage(Context context, StorageAdapter storage) {
 		mDataListeners = new ArrayList<DataListener>();
 		mContext = context;
 		mStorage = storage;
-		mFolder =  Environment.getDataDirectory()+"/data/" + mContext.getPackageName();
-		mLikeFile = new File(mFolder+'/'+FILE_NAME);
+		mFolder = Environment.getDataDirectory() + "/data/" + mContext.getPackageName();
+		mLikeFile = new File(mFolder + '/' + FILE_NAME);
 		if (!mLikeFile.exists()) {
 			createLikeArr(); 
 			likeArrToFile();
@@ -63,8 +61,7 @@ public class LikeStorage {
 			netStorage = new NetworkStorage();
 		}
 	}	
-	
-	
+		
 	public void registerDataListener(DataListener listener) {
 		mDataListeners.add(listener);
 	}
@@ -84,7 +81,7 @@ public class LikeStorage {
 	private void createLikeArr() {
 		int categoryCount = mStorage.getCategoryCount();
 		mLikeStorage =  new Like[categoryCount][];
-		for(int i = 0 ; i < categoryCount; i++) {
+		for(int i = 0; i < categoryCount; i++) {
 			int count = mStorage.getContentItemCountByCategory(i);
 			mLikeStorage[i] = new Like[count];
 			for(int j = 0; j < count; j++) {
@@ -128,10 +125,12 @@ public class LikeStorage {
 	private void likeFileToArr() {
 		FileReader reader = null;
 		try {
-			reader= new FileReader(mLikeFile);
+			reader = new FileReader(mLikeFile);
 		}
 		catch(FileNotFoundException ex) {
 			Log.w("LikeStorage", ex.getMessage());
+			createLikeArr();
+			return;
 		}
 		try {
 			int categoryCount = reader.read();
@@ -181,7 +180,7 @@ public class LikeStorage {
 	
 	public boolean isConnected() {
 		ConnectivityManager cm = 
-				(ConnectivityManager) mContext.getSystemService(mContext.CONNECTIVITY_SERVICE);
+				(ConnectivityManager) mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
 		NetworkInfo info = cm.getActiveNetworkInfo();
 		if (info != null && info.isConnected()) {
 			return true;
@@ -190,9 +189,9 @@ public class LikeStorage {
 			return false;
 		}
 	}
-	
+			
+	private class NetworkStorage extends AsyncTask<Like[][], Void, Void> {
 		
-	private class NetworkStorage extends AsyncTask<Like[][], Void, Void> {		
 		@Override
         protected Void doInBackground(Like[][]... params) {
 			if (params.length > 0) {
@@ -341,7 +340,4 @@ public class LikeStorage {
 			return result;			
 		}		
 	}
-	
-	
-
 }

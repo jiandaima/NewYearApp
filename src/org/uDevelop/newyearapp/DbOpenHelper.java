@@ -12,10 +12,11 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.Environment;
 import android.util.Log;
 
 public class DbOpenHelper extends SQLiteOpenHelper {
-	private final static int sBufferSize =  8192;
+	private final static int BUFFER_SIZE =  8192;
 	private String mDbFolder;
 	private String mDbName;
 	private int mDatabaseVersion;
@@ -25,7 +26,7 @@ public class DbOpenHelper extends SQLiteOpenHelper {
 			int version) {
 		super(context, name, factory, version);
 		mContext = context;
-		mDbFolder = "/data/data/" + mContext.getPackageName() + "/databases/";
+		mDbFolder = Environment.getDataDirectory() + "/data/" + mContext.getPackageName() + "/databases/";
 		mDbName = name;
 		mDatabaseVersion = version;
 	}
@@ -80,15 +81,15 @@ public class DbOpenHelper extends SQLiteOpenHelper {
         }
         try {
         	inStream = new BufferedInputStream(mContext.getAssets().open(inFolder 
-        			+ dbName), sBufferSize);
+        			+ dbName), BUFFER_SIZE);
         }
         catch (IOException ex) {
         	Log.w("DBOpenHelper", ex.getMessage());
         }
         try {            
             outStream = new BufferedOutputStream(new FileOutputStream(outFolder 
-            		+ dbName), sBufferSize);
-            byte[] buf = new byte[sBufferSize];
+            		+ dbName), BUFFER_SIZE);
+            byte[] buf = new byte[BUFFER_SIZE];
             int length;
             while ((length = inStream.read(buf)) > 0) {
             	outStream.write(buf, 0, length);

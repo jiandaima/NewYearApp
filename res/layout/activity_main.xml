@@ -4,7 +4,7 @@
     android:layout_height="fill_parent"
     android:orientation="vertical"
     android:background="@drawable/background_main"
-    tools:context=".MainActivity" xmlns:app="http://schemas.android.com/apk/res/org.uDevelop.newyearapp">
+    tools:context=".MainActivity" >
     
     <include layout="@layout/actionbar"/>
     

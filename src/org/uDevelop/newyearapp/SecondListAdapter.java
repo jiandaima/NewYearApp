@@ -11,7 +11,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 public class SecondListAdapter extends BaseAdapter implements DataListener{
-	private Context mContext;
 	private StorageAdapter mStorageAdapter;
 	private LayoutInflater mInflater;
 	private int mCategoryId;
@@ -25,7 +24,6 @@ public class SecondListAdapter extends BaseAdapter implements DataListener{
 	
 	public SecondListAdapter(Context context, StorageAdapter storageAdapter, 
 					int[] itemsId, int categoryId) {
-		mContext = context;
 		mInflater = LayoutInflater.from(context);
 		mStorageAdapter = storageAdapter;
 		mStorageAdapter.registerDataListener(this);
@@ -45,7 +43,7 @@ public class SecondListAdapter extends BaseAdapter implements DataListener{
             TextView name = (TextView)view.findViewById(R.id.list_view_item_text);
             name.setText(item.name);
             ImageView icon = (ImageView)view.findViewById(R.id.list_view_item_icon);
-            Class res = R.drawable.class;
+            Class<R.drawable> res = R.drawable.class;
             int imageId = 0;
             try {
             	imageId= res.getField(item.icon).getInt(null);
@@ -57,8 +55,9 @@ public class SecondListAdapter extends BaseAdapter implements DataListener{
             holder.LikeCountTextView = (TextView)view.findViewById(R.id.list_view_like_num);
             holder.category = mCategoryId;
             view.setTag(holder);
-        } else {
-            holder = (ViewHolder) view.getTag();
+        } 
+		else {
+			holder = (ViewHolder) view.getTag();
         }
 		
 		holder.LikeCountTextView.setText(Integer.toString(like.count));

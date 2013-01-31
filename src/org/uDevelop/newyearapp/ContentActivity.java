@@ -19,23 +19,22 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 public class ContentActivity extends Activity implements OnItemClickListener {
-	private static final int sPictureWidth = 684; //ширина картинки(большой) в px
-	private static final int sShareButtonRightBorder = 14; 
-	private static final int sShareButtonBottomBorder = 28; 
-	private static final int sShareButtonWidth = 100; //ширина картинки кнопки шаринга в px
-	private static final String sShareSubject = "Отличная идея  встречи Нового года!";
-	private static final String sShareText = "Хочу поделиться отличной идеей для встречи Нового года: ";
-	private static final String sShareWith ="Поделиться через";
-	private static final int sListItemsCount = 3;
-	float sMagicScaleConst = 1.0f;
-	float sMagicMargin = 10f;
+	private static final int PICTURE_WIDTH = 684; //ширина картинки(большой) в px
+	private static final int SHARE_BUTTON_RIGHT_BORDER = 14; 
+	private static final int SHARE_BUTTON_BOTTOM_BORDER = 28; 
+	private static final int SHARE_BUTTON_WIDTH = 100; //ширина картинки кнопки шаринга в px
+	private static final String SHARE_SUBJECT = "Отличная идея  встречи Нового года!";
+	private static final String SHARE_TEXT = "Хочу поделиться отличной идеей для встречи Нового года: ";
+	private static final String SHARE_WITH ="Поделиться через";
+	private static final int LIST_ITEMS_COUNT = 3;
+	private static final float MAGIC_SCALE_CONST = 1.0f;
+	private static final float MAGIC_MARGIN = 10f;
 	private StorageAdapter mStorageAdapter; 
 	private ItemInfo mItem;
 	private int mCategoryId;
 	private int mIndex;
-	int[] mItemsId = new int[sListItemsCount];
-	 
-
+	int[] mItemsId = new int[LIST_ITEMS_COUNT];
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -61,10 +60,10 @@ public class ContentActivity extends Activity implements OnItemClickListener {
 		return true;
 	}
 	
-	private void fillActivity(){ //Заполняется все, кроме ЛистВью
+	private void fillActivity() { //Заполняется все, кроме ЛистВью
 		mItem = mStorageAdapter.getContentItem(mCategoryId, mIndex);
 		Like like = mStorageAdapter.getItemLike(mCategoryId, mIndex);
-		Class res = R.drawable.class;
+		Class<R.drawable> res = R.drawable.class;
 		
 		int imageId = 0;
         try {
@@ -113,10 +112,10 @@ public class ContentActivity extends Activity implements OnItemClickListener {
 	}
 	
 	private void fillList() {
-		ListView list = (ListView)findViewById(R.id.other_items_list);
+		ListView list = (ListView) findViewById(R.id.other_items_list);
 		int itemsCount = mStorageAdapter.getContentItemCountByCategory(mCategoryId);
 		Random rand = new Random();
-		for(int i = 0; i < sListItemsCount; i++) {
+		for(int i = 0; i < LIST_ITEMS_COUNT; i++) {
 			int index = rand.nextInt(itemsCount);
 			while ((index == mIndex) || member(mItemsId, index, i)) {
 				index = rand.nextInt(itemsCount);
@@ -139,12 +138,12 @@ public class ContentActivity extends Activity implements OnItemClickListener {
 	void correctShareBtn() { 
 		Display display = getWindowManager().getDefaultDisplay();
 		int screenWidth = display.getWidth();
-		float scale =  sMagicScaleConst * screenWidth / sPictureWidth;
+		float scale =  MAGIC_SCALE_CONST * screenWidth / PICTURE_WIDTH;
 		ImageButton shareBtn = (ImageButton) findViewById(R.id.share_button);
-		int rightBorder = (int) ((sShareButtonRightBorder + sMagicMargin) * scale);
-		int bottomBorder = (int) ((sShareButtonBottomBorder + sMagicMargin) * scale);
-		int btnWidth = (int) (sShareButtonWidth * scale);
-		LayoutParams param = (LayoutParams) shareBtn.getLayoutParams();//setsetHeight(btnWidth);
+		int rightBorder = (int) ((SHARE_BUTTON_RIGHT_BORDER + MAGIC_MARGIN) * scale);
+		int bottomBorder = (int) ((SHARE_BUTTON_BOTTOM_BORDER + MAGIC_MARGIN) * scale);
+		int btnWidth = (int) (SHARE_BUTTON_WIDTH * scale);
+		LayoutParams param = (LayoutParams) shareBtn.getLayoutParams();
 		param.width = btnWidth;
 		param.height = btnWidth;
 		param.rightMargin = rightBorder;
@@ -155,16 +154,14 @@ public class ContentActivity extends Activity implements OnItemClickListener {
 	public void shareContent(View view) {
 		Intent intent = new Intent(android.content.Intent.ACTION_SEND);
 		intent.setType("text/plain");
-		intent.putExtra(android.content.Intent.EXTRA_SUBJECT, sShareSubject);
-		String text = sShareText+"\""+mItem.name+"\".\n\n"+mItem.text;
+		intent.putExtra(android.content.Intent.EXTRA_SUBJECT, SHARE_SUBJECT);
+		String text = SHARE_TEXT+"\""+mItem.name+"\".\n\n"+mItem.text;
 		intent.putExtra(android.content.Intent.EXTRA_TEXT, text);
-		startActivity(Intent.createChooser(intent, sShareWith));
+		startActivity(Intent.createChooser(intent, SHARE_WITH));
 	}
 	
 	public void likeBtnClick(View view) {
 		mStorageAdapter.setLiked(mCategoryId, mIndex);
 		fillActivity();
 	}
-	
-
 }
