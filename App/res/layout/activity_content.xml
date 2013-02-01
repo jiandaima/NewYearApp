@@ -1,0 +1,104 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:background="@drawable/background_main"
+    tools:context=".ContentActivity" >
+    
+    <include layout="@layout/actionbar"/>
+    <include layout="@layout/content_head"/>
+    
+    <ScrollView
+        android:id="@+id/scroll" 
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" 
+        android:scrollbars="none" >
+       	
+        <LinearLayout 
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" 
+            android:orientation="vertical" >
+            
+            
+            <RelativeLayout
+                android:layout_width="wrap_content"
+            	android:layout_height="wrap_content" >
+            	
+                <ImageView 
+            		android:id="@+id/picture"
+            		android:layout_width="fill_parent"
+            		android:layout_height="wrap_content" 
+            		android:adjustViewBounds="true"
+            		android:layout_alignParentTop="true"           	 
+            		android:src="@drawable/image_workroom" />               
+
+                    <ImageButton
+                        android:id="@+id/share_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:scaleType="fitXY"
+                        android:adjustViewBounds="true"
+                        android:layout_alignBottom="@+id/picture"
+                    	android:layout_alignRight="@id/picture"
+                        android:src="@drawable/button_share" 
+                        android:background="#00000000"
+                        android:onClick="shareContent" />                
+                
+            </RelativeLayout>
+                    	
+        
+        	<TextView 
+            	android:id="@+id/_text"            
+            	android:layout_width="fill_parent"
+            	android:layout_height="wrap_content"
+            	android:paddingLeft="7dp"
+            	android:paddingRight="7dp"
+            	android:textSize="13sp"
+            	android:text="text" />
+        	
+        	<ImageButton 
+            	android:id="@+id/like_button"
+            	android:layout_width="fill_parent"
+            	android:layout_height="wrap_content"
+            	android:layout_gravity="center"
+            	android:scaleType="fitCenter"
+            	android:layout_marginLeft="7dp"
+            	android:layout_marginRight="7dp"
+            	android:adjustViewBounds="true"
+            	android:src="@drawable/like_button"
+            	android:background="#00000000" 
+            	android:onClick="likeBtnClick"/>  
+            
+        		
+        	<LinearLayout 
+            	android:layout_width="fill_parent"
+            	android:layout_height="216dp" 
+            	android:orientation="vertical"
+            	android:background="@drawable/background_bottom" >
+            	
+        	    <TextView 
+            	    android:layout_width="fill_parent"
+            		android:layout_height="wrap_content"
+            		android:textSize="15sp"
+            		android:paddingTop="30dp"
+            		android:paddingLeft="7dp"
+            		android:paddingRight="7dp"
+            		android:textColor="#AA0000"
+            		android:textStyle="bold"
+            		android:text="@string/see"/>
+        	    
+        	    <ListView
+        	        android:id="@+id/other_items_list"
+        	        android:layout_width="fill_parent"
+        	        android:layout_height="fill_parent"
+        	        android:scrollbars="none"
+        	        android:listSelector="@drawable/background_list_item" />
+            	
+        	</LinearLayout>
+        	
+        </LinearLayout>        
+                
+    </ScrollView>    
+
+</LinearLayout>
