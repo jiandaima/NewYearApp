@@ -16,24 +16,27 @@
         <activity
             android:name="org.uDevelop.newyearapp.MainActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/StyledIndicators" >
+            android:theme="@style/StyledIndicators" android:exported="false"> 
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />                
-            </intent-filter>
+                <category android:name="android.intent.category.MONKEY" />                                
+            </intent-filter>            
         </activity>
         <activity
             android:name="org.uDevelop.newyearapp.ContentActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/StyledIndicators" >
+            android:theme="@style/StyledIndicators" android:exported="false"> 
+            <intent-filter>
+                <category android:name="android.intent.category.MONKEY" />                                
+            </intent-filter>            
         </activity>
         <activity
             android:name="org.uDevelop.newyearapp.LoadScreenActivity"
              android:screenOrientation="portrait"
-            android:theme="@style/StyledIndicators" >
+            android:theme="@style/StyledIndicators">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.MONKEY" /> 
+                <category android:name="android.intent.category.LAUNCHER" />                
             </intent-filter>
         </activity>
     </application>

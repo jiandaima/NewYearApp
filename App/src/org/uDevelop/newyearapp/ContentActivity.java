@@ -52,14 +52,7 @@ public class ContentActivity extends Activity implements OnItemClickListener {
 		super.onDestroy();
 		mStorageAdapter.close();
 	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.activity_content, menu);
-		return true;
-	}
-	
+		
 	private void fillActivity() { //Заполняется все, кроме ЛистВью
 		mItem = mStorageAdapter.getContentItem(mCategoryId, mIndex);
 		Like like = mStorageAdapter.getItemLike(mCategoryId, mIndex);
