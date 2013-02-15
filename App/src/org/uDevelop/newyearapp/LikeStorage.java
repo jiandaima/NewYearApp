@@ -149,7 +149,13 @@ public class LikeStorage {
 		}
 		catch(IOException ex) {
 			Log.w("LikeStorage", ex.getMessage());
-		}		
+			createLikeArr();
+			
+		}
+		catch(Exception ex) {
+			Log.w("LikeStorage", ex.getMessage());
+			createLikeArr();
+		}	
 	}
 	
 	public Like getLike(int categoryId, int elementId) {
@@ -174,6 +180,7 @@ public class LikeStorage {
 		if (mLikeStorage[categoryId][elementId].state == Like.NOT_LIKE) {
 			notifyDataSetChanged();
 			setLikedLocal(categoryId, elementId);
+			likeArrToFile(); //дублируем сохранение, т.к. операция sync м.б. прервана, и инфа, что элемент залайкан, потеряется
 			SyncLikeStorage();
 		}
 	}	
@@ -199,6 +206,7 @@ public class LikeStorage {
 				if (isConnected()) {
 					pushToServer(likeArr);
 					pullFromServer(likeArr);
+					likeArrToFile();
 				}								
 			}			
 			return null;           
@@ -206,7 +214,6 @@ public class LikeStorage {
 		
 		@Override
         protected void onPostExecute(Void result) {
-			likeArrToFile();
 			notifyDataSetChanged() ;
 		}
 		
